@@ -29,7 +29,13 @@ export type Results = {
 export type History = Coefficients[];
 
 export type CubicInputProps = {
-    label: string;
-    value: number;
-    setValue: (val: number) => void;
-}
+  label: string;
+  value: number;
+  setValue: (val: number) => void;
+};
+
+export type AnalysisProps = {
+  label: string;
+  value: number | string;
+  color: string;
+};

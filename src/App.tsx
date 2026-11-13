@@ -4,6 +4,7 @@ import { CubicInput } from "./components/CubicInput";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import type { Coefficients, Results } from "./types";
+import { Analysis } from "./components/Analysis";
 
 export const App = () => {
   const [a, setA] = useState(0);
@@ -25,11 +26,11 @@ export const App = () => {
         <div className="bg-[#07090e] text-slate-200 antialiased selection:bg-cyan-500/20 selection:text-cyan-300">
           <Header />
         </div>
-        
+
         <main className="space-y-12">
           <section className="relative overflow-hidden rounded-xl border border-slate-800 bg-[#0b0f19] p-6 shadow-2xl">
             <div className="absolute top-0 left-0 h-full w-1 bg-cyan-500"></div>
-            <form className="flex flex-wrap items-center justify-between gap-6" id="form">
+            <form className="flex flex-wrap items-center justify-between gap-6" id="form" onChange={handleOnChange}>
               <div className="flex flex-1 flex-wrap justify-start gap-4 sm:gap-6">
                 <CubicInput label="a-value [x³]" setValue={setA} value={a} />
                 <CubicInput label="b-value [x²]" setValue={setB} value={b} />
@@ -51,56 +52,25 @@ export const App = () => {
               <h2 className="font-bold font-mono text-slate-500 text-xs uppercase tracking-widest">{"01 // ANALYSIS"}</h2>
             </div>
             <div className="space-y-1 font-mono text-xs">
-              <div className="flex items-center justify-between border-slate-900 border-b px-1 py-3 transition hover:bg-slate-900/30">
-                <span className="text-slate-500">[p] parameter</span>
-                <span className="font-medium text-slate-200" id="p">
-                  results?.p??"N?A"
-                </span>
-              </div>
-              <div className="flex items-center justify-between border-slate-900 border-b px-1 py-3 transition hover:bg-slate-900/30">
-                <span className="text-slate-500">[q] parameter</span>
-                <span className="font-medium text-slate-200" id="q">
-                  results?.q??"N?A"
-                </span>
-              </div>
-              <div className="flex items-center justify-between border-slate-900 border-b px-1 py-3 transition hover:bg-slate-900/30">
-                <span className="text-slate-500">[Δ] discriminant</span>
-                <span className="font-bold text-amber-400 tracking-wide" id="discriminant">
-                  results?.discriminant??"N?A"
-                </span>
-              </div>
-              <div className="flex items-center justify-between border-slate-900 border-b px-1 py-3 transition hover:bg-slate-900/30">
-                <span className="text-slate-500">[r1] root alpha</span>
-                <span className="text-emerald-400" id="root-one">
-                  x: N/A | y: N/A
-                </span>
-              </div>
-              <div className="flex items-center justify-between border-slate-900 border-b px-1 py-3 transition hover:bg-slate-900/30">
-                <span className="text-slate-500">[r2] root beta</span>
-                <span className="text-emerald-400" id="root-two">
-                  x: N/A | y: N/A
-                </span>
-              </div>
-              <div className="flex items-center justify-between border-slate-900 border-b px-1 py-3 transition hover:bg-slate-900/30">
-                <span className="text-slate-500">[r3] root gamma</span>
-                <span className="text-emerald-400" id="root-three">
-                  x: N/A | y: N/A
-                </span>
-              </div>
-              <div className="flex items-center justify-between border-slate-900 border-b px-1 py-3 transition hover:bg-slate-900/30">
-                <span className="text-slate-500">[min] critical point</span>
-                <span className="text-cyan-400" id="minimum">
-                  results?.minimum??"N?A"
-                </span>
-              </div>
-              <div className="flex items-center justify-between border-slate-900 border-b px-1 py-3 transition hover:bg-slate-900/30">
-                <span className="text-slate-500">[max] critical point</span>
-                <span className="text-purple-400" id="maximum">
-                  results?.maximum??"N?A"
-                </span>
-              </div>
+              <Analysis color="text-slate-200" label="[p] parameter" value={results?.p ?? "N/A"} />
+              <Analysis color="text-slate-200" label="[q] parameter" value={results?.q ?? "N/A"} />
+              <Analysis color="text-amber-400" label="[Δ] discriminant" value={results?.discriminant ?? "N/A"} />
+              <Analysis color="text-emerald-400" label="[r1] root alpha" value={results?.r1 ? `${results.r1.x},${results.r1.y}` : "N/A"} />
+              <Analysis color="text-emerald-400" label="[r2] root beta" value={results?.r2 ? `${results.r2.x},${results.r2.y}` : "N/A"} />
+              <Analysis color="text-emerald-400" label="[r3] root gamma" value={results?.r3 ? `${results.r3.x},${results.r3.y}` : "N/A"} />
+              <Analysis
+                color="text-cyan-400"
+                label="[min] critical point"
+                value={results?.minimum ? `(${results.minimum.x}, ${results.minimum.y})` : "N/A"}
+              />
+              <Analysis
+                color="text-purple-400"
+                label="[max] critical point"
+                value={results?.maximum ? `(${results.maximum.x}, ${results.maximum.y})` : "N/A"}
+              />
             </div>
           </section>
+
           <section className="flex flex-col space-y-6">
             <div className="flex items-center gap-4">
               <h2 className="font-bold font-mono text-slate-500 text-xs uppercase tracking-widest">{"02 // SUMMARY"}</h2>
