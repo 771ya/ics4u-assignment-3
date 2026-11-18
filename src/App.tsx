@@ -1,10 +1,11 @@
-import { type SyntheticEvent, useState } from "react";
+import { type SyntheticEvent, useState, useEffect } from "react";
 import { calculateResult } from "./utils/calculation";
 import { CubicInput } from "./components/CubicInput";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import type { Coefficients, Results } from "./types";
 import { Analysis } from "./components/Analysis";
+import { Summary } from "./components/Summary";
 
 export const App = () => {
   const [a, setA] = useState(0);
@@ -52,21 +53,33 @@ export const App = () => {
               <h2 className="font-bold font-mono text-slate-500 text-xs uppercase tracking-widest">{"01 // ANALYSIS"}</h2>
             </div>
             <div className="space-y-1 font-mono text-xs">
-              <Analysis color="text-slate-200" label="[p] parameter" value={results?.p ?? "N/A"} />
-              <Analysis color="text-slate-200" label="[q] parameter" value={results?.q ?? "N/A"} />
-              <Analysis color="text-amber-400" label="[Δ] discriminant" value={results?.discriminant ?? "N/A"} />
-              <Analysis color="text-emerald-400" label="[r1] root alpha" value={results?.r1 ? `${results.r1.x},${results.r1.y}` : "N/A"} />
-              <Analysis color="text-emerald-400" label="[r2] root beta" value={results?.r2 ? `${results.r2.x},${results.r2.y}` : "N/A"} />
-              <Analysis color="text-emerald-400" label="[r3] root gamma" value={results?.r3 ? `${results.r3.x},${results.r3.y}` : "N/A"} />
+              <Analysis color="text-slate-200" label="[p] parameter" value={results?.p ?? "0.0000"} />
+              <Analysis color="text-slate-200" label="[q] parameter" value={results?.q ?? "0.0000"} />
+              <Analysis color="text-amber-400" label="[Δ] discriminant" value={results?.discriminant ?? "0.0000"} />
+              <Analysis
+                color="text-emerald-400"
+                label="[r1] root alpha"
+                value={results?.r1 ? `x:${results.r1.x} | y:${results.r1.y}` : "x: N/A | y: N/A"}
+              />
+              <Analysis
+                color="text-emerald-400"
+                label="[r2] root beta"
+                value={results?.r2 ? `x:${results.r2.x} | y:${results.r2.y}` : "x: N/A | y: N/A"}
+              />
+              <Analysis
+                color="text-emerald-400"
+                label="[r3] root gamma"
+                value={results?.r3 ? `x:${results.r3.x} | y:${results.r3.y}` : "x: N/A | y: N/A"}
+              />
               <Analysis
                 color="text-cyan-400"
                 label="[min] critical point"
-                value={results?.minimum ? `(${results.minimum.x}, ${results.minimum.y})` : "N/A"}
+                value={results?.minimum ? `(${results.minimum.x}, ${results.minimum.y})` : "x: N/A | y: N/A"}
               />
               <Analysis
                 color="text-purple-400"
                 label="[max] critical point"
-                value={results?.maximum ? `(${results.maximum.x}, ${results.maximum.y})` : "N/A"}
+                value={results?.maximum ? `(${results.maximum.x}, ${results.maximum.y})` : "x: N/A | y: N/A"}
               />
             </div>
           </section>
@@ -76,47 +89,30 @@ export const App = () => {
               <h2 className="font-bold font-mono text-slate-500 text-xs uppercase tracking-widest">{"02 // SUMMARY"}</h2>
             </div>
             <div className="space-y-1 font-mono text-xs">
-              <div className="flex flex-col gap-1 rounded-lg border border-slate-900 bg-[#0b0f19]/40 p-4">
-                <span className="text-[10px] text-slate-500 uppercase tracking-wider">f(x) expanded polynomial</span>
-                <span className="break-all text-slate-200 text-sm tracking-wide" id="equation">
-                  N/A
-                </span>
-              </div>
-              <div className="flex flex-col gap-1 rounded-lg border border-slate-900 bg-[#0b0f19]/40 p-4">
-                <span className="text-[10px] text-slate-500 uppercase tracking-wider">f'(x) first derivative</span>
-                <span className="break-all text-cyan-400 text-sm tracking-wide" id="first-derivative">
-                  N/A
-                </span>
-              </div>
-              <div className="flex flex-col gap-1 rounded-lg border border-slate-900 bg-[#0b0f19]/40 p-4">
-                <span className="text-[10px] text-slate-500 uppercase tracking-wider">f''(x) second derivative</span>
-                <span className="break-all text-purple-400 text-sm tracking-wide" id="second-derivative">
-                  N/A
-                </span>
-              </div>
-              <div className="flex flex-col gap-1 rounded-lg border border-slate-900 bg-[#0b0f19]/40 p-4">
-                <span className="text-[10px] text-slate-500 uppercase tracking-wider">roots</span>
-                <span className="break-all text-emerald-400 text-sm tracking-wide" id="roots">
-                  N/A
-                </span>
-              </div>
-              <div className="flex flex-col gap-1 rounded-lg border border-slate-900 bg-[#0b0f19]/40 p-4">
-                <span className="text-[10px] text-slate-500 uppercase tracking-wider">factored form</span>
-                <span className="wrap-break-word pt-1 text-left text-sm text-white tracking-wide" id="factored">
-                  No real factorization
-                </span>
-              </div>
+              <Summary color="text-slate-200" label="f(x) expanded polynomial" value={results?.equation ? results.equation : "N/A"} />
+              <Summary
+                color="text-cyan-400"
+                label="f'(x) first derivative"
+                value={results?.firstDerivative ? results.firstDerivative : "N/A"}
+              />
+              <Summary
+                color="text-purple-400"
+                label="f''(x) second derivative"
+                value={results?.secondDerivative ? results.secondDerivative : "N/A"}
+              />
+              <Summary color="text-emerald-400" label="roots" value={results?.roots ? results.roots : "N/A"} />
+              <Summary color="text-white" label="factored form" value={results?.factored ? results.factored : "No real factorization"} />
             </div>
           </section>
           <section className="flex max-h-140 flex-col space-y-6">
             <div className="flex items-center gap-4">
-              <h2 className="font-bold font-mono text-slate-500 text-xs uppercase tracking-widest">03 // HISTORY</h2>
+              <h2 className="font-bold font-mono text-slate-500 text-xs uppercase tracking-widest">{"03 // HISTORY"}</h2>
             </div>
             <div className="custom-scrollbar flex-1 space-y-2 overflow-y-auto pr-2 font-mono text-slate-400 text-xs" id="history"></div>
           </section>
           <section className="flex flex-col space-y-6">
             <div className="flex items-center gap-4">
-              <h2 className="font-bold font-mono text-slate-500 text-xs uppercase tracking-widest">04 // GRAPH</h2>
+              <h2 className="font-bold font-mono text-slate-500 text-xs uppercase tracking-widest">{"04 // GRAPH"}</h2>
             </div>
             <div className="flex-1 rounded-xl border border-slate-900 bg-[#0b0f19]/50 bg-[radial-gradient(#1e293b_1px,transparent_1px)] bg-size-[16px_16px] p-6 shadow-2xl">
               <canvas

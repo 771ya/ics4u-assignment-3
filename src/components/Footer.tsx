@@ -1,4 +1,3 @@
-
 export const Footer = () => {
     return (
         <footer className="mx-auto mt-12 w-full max-w-6xl border-slate-800 border-t px-4 py-12">
