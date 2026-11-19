@@ -1,9 +1,9 @@
-import { type SyntheticEvent, useState, useEffect } from "react";
-import { calculateResult } from "./utils/calculation";
+import { type SyntheticEvent, useState } from "react";
+import { calculateResult, formatNumber } from "./utils/calculation";
 import { CubicInput } from "./components/CubicInput";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
-import type { Coefficients, Results } from "./types";
+import type { Coefficients, History, Results } from "./types";
 import { Analysis } from "./components/Analysis";
 import { Summary } from "./components/Summary";
 
@@ -13,12 +13,17 @@ export const App = () => {
   const [c, setC] = useState(0);
   const [d, setD] = useState(0);
   const coefficients: Coefficients = { a, b, c, d };
-  const [results, setResults] = useState<Results | null>(null);
+  const [history, setHistory] = useState<Coefficients[]>([]);
 
-  const handleOnChange = (event: SyntheticEvent<HTMLFormElement>) => {
+  const isValid = a !== 0 && [a, b, c, d].every(Number.isFinite);
+  const results: Results | null = isValid ? calculateResult(coefficients) : null;
+
+  const handleSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    setResults(calculateResult(coefficients));
+    if (!isValid) return;
+
+    setHistory((prev) => [...prev, coefficients]);
   };
 
   return (
@@ -31,7 +36,7 @@ export const App = () => {
         <main className="space-y-12">
           <section className="relative overflow-hidden rounded-xl border border-slate-800 bg-[#0b0f19] p-6 shadow-2xl">
             <div className="absolute top-0 left-0 h-full w-1 bg-cyan-500"></div>
-            <form className="flex flex-wrap items-center justify-between gap-6" id="form" onChange={handleOnChange}>
+            <form className="flex flex-wrap items-center justify-between gap-6" id="form" onSubmit={handleSubmit}>
               <div className="flex flex-1 flex-wrap justify-start gap-4 sm:gap-6">
                 <CubicInput label="a-value [x³]" setValue={setA} value={a} />
                 <CubicInput label="b-value [x²]" setValue={setB} value={b} />
@@ -53,33 +58,53 @@ export const App = () => {
               <h2 className="font-bold font-mono text-slate-500 text-xs uppercase tracking-widest">{"01 // ANALYSIS"}</h2>
             </div>
             <div className="space-y-1 font-mono text-xs">
-              <Analysis color="text-slate-200" label="[p] parameter" value={results?.p ?? "0.0000"} />
-              <Analysis color="text-slate-200" label="[q] parameter" value={results?.q ?? "0.0000"} />
-              <Analysis color="text-amber-400" label="[Δ] discriminant" value={results?.discriminant ?? "0.0000"} />
+              <Analysis color="text-slate-200" label="[p] parameter" value={results ? formatNumber(results.p) : "0.0000"} />
+              <Analysis color="text-slate-200" label="[q] parameter" value={results ? formatNumber(results.q) : "0.0000"} />
+              <Analysis color="text-amber-400" label="[Δ] discriminant" value={results ? formatNumber(results.discriminant) : "0.0000"} />
               <Analysis
                 color="text-emerald-400"
                 label="[r1] root alpha"
-                value={results?.r1 ? `x:${results.r1.x} | y:${results.r1.y}` : "x: N/A | y: N/A"}
+                value={
+                  results?.r1
+                    ? `x: ${typeof results.r1.x === "number" ? formatNumber(results.r1.x) : results.r1.x} | y: ${typeof results.r1.y === "number" ? formatNumber(results.r1.y) : results.r1.y}`
+                    : "x: N/A | y: N/A"
+                }
               />
               <Analysis
                 color="text-emerald-400"
                 label="[r2] root beta"
-                value={results?.r2 ? `x:${results.r2.x} | y:${results.r2.y}` : "x: N/A | y: N/A"}
+                value={
+                  results?.r2
+                    ? `x: ${typeof results.r2.x === "number" ? formatNumber(results.r2.x) : results.r2.x} | y: ${typeof results.r2.y === "number" ? formatNumber(results.r2.y) : results.r2.y}`
+                    : "x: N/A | y: N/A"
+                }
               />
               <Analysis
                 color="text-emerald-400"
                 label="[r3] root gamma"
-                value={results?.r3 ? `x:${results.r3.x} | y:${results.r3.y}` : "x: N/A | y: N/A"}
+                value={
+                  results?.r3
+                    ? `x: ${typeof results.r3.x === "number" ? formatNumber(results.r3.x) : results.r3.x} | y: ${typeof results.r3.y === "number" ? formatNumber(results.r3.y) : results.r3.y}`
+                    : "x: N/A | y: N/A"
+                }
               />
               <Analysis
                 color="text-cyan-400"
                 label="[min] critical point"
-                value={results?.minimum ? `(${results.minimum.x}, ${results.minimum.y})` : "x: N/A | y: N/A"}
+                value={
+                  results?.minimum
+                    ? `x: ${typeof results.minimum.x === "number" ? formatNumber(results.minimum.x) : results.minimum.x} | y: ${typeof results.minimum.y === "number" ? formatNumber(results.minimum.y) : results.minimum.y}`
+                    : "x: N/A | y: N/A"
+                }
               />
               <Analysis
                 color="text-purple-400"
                 label="[max] critical point"
-                value={results?.maximum ? `(${results.maximum.x}, ${results.maximum.y})` : "x: N/A | y: N/A"}
+                value={
+                  results?.maximum
+                    ? `x: ${typeof results.maximum.x === "number" ? formatNumber(results.maximum.x) : results.maximum.x} | y: ${typeof results.maximum.y === "number" ? formatNumber(results.maximum.y) : results.maximum.y}`
+                    : "x: N/A | y: N/A"
+                }
               />
             </div>
           </section>
@@ -104,12 +129,20 @@ export const App = () => {
               <Summary color="text-white" label="factored form" value={results?.factored ? results.factored : "No real factorization"} />
             </div>
           </section>
+
           <section className="flex max-h-140 flex-col space-y-6">
             <div className="flex items-center gap-4">
               <h2 className="font-bold font-mono text-slate-500 text-xs uppercase tracking-widest">{"03 // HISTORY"}</h2>
             </div>
-            <div className="custom-scrollbar flex-1 space-y-2 overflow-y-auto pr-2 font-mono text-slate-400 text-xs" id="history"></div>
+            <div className="custom-scrollbar flex-1 space-y-2 overflow-y-auto pr-2 font-mono text-slate-400 text-xs" id="history">
+              {history.map((item, index) => (
+                <div className="rounded-md border border-slate-800 bg-[#0b0f19] p-4" key={index}>
+                  {item.a}x³ + {item.b}x² + {item.c}x + {item.d} = 0
+                </div>
+              ))}
+            </div>
           </section>
+
           <section className="flex flex-col space-y-6">
             <div className="flex items-center gap-4">
               <h2 className="font-bold font-mono text-slate-500 text-xs uppercase tracking-widest">{"04 // GRAPH"}</h2>

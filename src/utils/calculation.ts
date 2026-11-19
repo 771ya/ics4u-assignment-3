@@ -195,6 +195,14 @@ export function factoredForm(coefficients: Coefficients, discriminant: number, r
   }
 }
 
+export function formatNumber(value: number): string {
+  if (Math.abs(value) < 1e-10) {
+    return "0";
+  }
+
+  return Number(value.toFixed(4)).toString();
+}
+
 export function calculateResult(coefficients: Coefficients): Results {
   const { a, b, c, d } = coefficients;
 
