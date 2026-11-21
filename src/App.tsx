@@ -3,6 +3,7 @@ import { calculateResult, formatNumber } from "./utils/calculation";
 import { CubicInput } from "./components/CubicInput";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
+import { HistoryItem } from "./components/HistoryItem";
 import type { Coefficients, History, Results } from "./types";
 import { Analysis } from "./components/Analysis";
 import { Summary } from "./components/Summary";
@@ -13,7 +14,7 @@ export const App = () => {
   const [c, setC] = useState(0);
   const [d, setD] = useState(0);
   const coefficients: Coefficients = { a, b, c, d };
-  const [history, setHistory] = useState<Coefficients[]>([]);
+  const [history, setHistory] = useState<History>([]);
 
   const isValid = a !== 0 && [a, b, c, d].every(Number.isFinite);
   const results: Results | null = isValid ? calculateResult(coefficients) : null;
@@ -23,7 +24,13 @@ export const App = () => {
 
     if (!isValid) return;
 
-    setHistory((prev) => [...prev, coefficients]);
+    setHistory([...history, coefficients]);
+  };
+  const handleLoad = (item: Coefficients) => {
+    setA(item.a);
+    setB(item.b);
+    setC(item.c);
+    setD(item.d);
   };
 
   return (
@@ -135,10 +142,8 @@ export const App = () => {
               <h2 className="font-bold font-mono text-slate-500 text-xs uppercase tracking-widest">{"03 // HISTORY"}</h2>
             </div>
             <div className="custom-scrollbar flex-1 space-y-2 overflow-y-auto pr-2 font-mono text-slate-400 text-xs" id="history">
-              {history.map((item, index) => (
-                <div className="rounded-md border border-slate-800 bg-[#0b0f19] p-4" key={index}>
-                  {item.a}x³ + {item.b}x² + {item.c}x + {item.d} = 0
-                </div>
+              {history.map((item) => (
+                <HistoryItem item={item} key={`${item.a},${item.b},${item.c},${item.d}`} onLoad={handleLoad} />
               ))}
             </div>
           </section>
