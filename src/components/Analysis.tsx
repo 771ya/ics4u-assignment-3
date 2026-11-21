@@ -1,4 +1,8 @@
-import type { AnalysisProps } from "@ics4u-assignment-02/types";
+export type AnalysisProps = {
+  label: string;
+  value: number | string;
+  color: string;
+};
 
 export const Analysis = ({ label, value, color }: AnalysisProps) => {
   return (

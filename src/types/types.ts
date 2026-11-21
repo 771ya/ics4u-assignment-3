@@ -33,9 +33,3 @@ export type CubicInputProps = {
   value: number;
   setValue: (val: number) => void;
 };
-
-export type AnalysisProps = {
-  label: string;
-  value: number | string;
-  color: string;
-};

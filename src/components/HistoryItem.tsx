@@ -3,9 +3,10 @@ import type { Coefficients } from "@ics4u-assignment-02/types";
 type historyItemProps = {
   item: Coefficients;
   onLoad: (item: Coefficients) => void;
+  onDelete: (item:Coefficients) => void;
 };
 
-export const HistoryItem = ({ item, onLoad }: historyItemProps) => {
+export const HistoryItem = ({ item, onLoad, onDelete}: historyItemProps) => {
   return (
     <div className="flex flex-row items-center justify-start gap-2 rounded-md bg-slate-950/50">
       <div
@@ -17,7 +18,7 @@ export const HistoryItem = ({ item, onLoad }: historyItemProps) => {
         <div className="w-3 text-white text-xs">{item.c}</div>
         <div className="w-3 text-white text-xs">{item.d}</div>
       </div>
-      <button className="delete-btn rounded-lg border border-red-900 bg-red-800/25 p-2 font-mono text-red-400 text-xs text-y-center hover:bg-red-600/25">
+      <button className="delete-btn rounded-lg border border-red-900 bg-red-800/25 p-2 font-mono text-red-400 text-xs text-y-center hover:bg-red-600/25" onClick ={()=>onDelete(item)}>
         Delete
       </button>
     </div>

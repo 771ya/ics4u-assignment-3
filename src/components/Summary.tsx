@@ -1,4 +1,4 @@
-type SummaryProps = {
+export type SummaryProps = {
   label: string;
   color: string;
   value: string;
