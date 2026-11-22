@@ -1,5 +1,5 @@
-import { EPS } from "@ics4u-assignment-02/constants";
-import type { Coefficients, Coordinate, Results } from "@ics4u-assignment-02/types";
+import { EPS } from "@ics4u-assignment-03/constants";
+import type { Coefficients, Coordinate, Results } from "@ics4u-assignment-03/types";
 
 export function calculateParameters(coefficients: Coefficients) {
   const { a, b, c, d } = coefficients;

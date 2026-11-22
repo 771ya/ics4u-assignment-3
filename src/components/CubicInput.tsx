@@ -1,4 +1,4 @@
-import type { CubicInputProps } from "@ics4u-assignment-02/types";
+import type { CubicInputProps } from "@ics4u-assignment-03/types";
 
 export const CubicInput = ({ label, value, setValue }: CubicInputProps) => {
   return (

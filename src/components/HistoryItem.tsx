@@ -1,4 +1,4 @@
-import type { Coefficients } from "@ics4u-assignment-02/types";
+import type { Coefficients } from "@ics4u-assignment-03/types";
 
 type historyItemProps = {
   item: Coefficients;

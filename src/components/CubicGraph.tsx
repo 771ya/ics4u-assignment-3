@@ -1,5 +1,5 @@
-import type { Coefficients, Results } from "@ics4u-assignment-02/types";
-import { drawGraph } from "@ics4u-assignment-02/utils/drawGraph";
+import type { Coefficients, Results } from "@ics4u-assignment-03/types";
+import { drawGraph } from "@ics4u-assignment-03/utils/drawGraph";
 import { useEffect, useRef } from "react";
 
 type CubicGraphProps = {

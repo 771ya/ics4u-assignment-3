@@ -1,5 +1,5 @@
-import type { Results } from "@ics4u-assignment-02/types";
-import { formatNumber } from "@ics4u-assignment-02/utils/calculation";
+import type { Results } from "@ics4u-assignment-03/types";
+import { formatNumber } from "@ics4u-assignment-03/utils/calculation";
 import { Analysis } from "./Analysis";
 import { Summary } from "./Summary";
 
