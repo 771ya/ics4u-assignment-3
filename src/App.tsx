@@ -1,11 +1,12 @@
 import { type SyntheticEvent, useState } from "react";
-import { calculateResult } from "./utils/calculation";
+import { CubicGraph } from "./components/CubicGraph";
 import { CubicInput } from "./components/CubicInput";
+import { CubicTable } from "./components/CubicTable";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { HistoryItem } from "./components/HistoryItem";
 import type { Coefficients, History, Results } from "./types";
-import { CubicTable } from "./components/CubicTable";
+import { calculateResult } from "./utils/calculation";
 
 export const App = () => {
   const [a, setA] = useState(0);
@@ -92,12 +93,7 @@ export const App = () => {
               <h2 className="font-bold font-mono text-slate-500 text-xs uppercase tracking-widest">{"04 // GRAPH"}</h2>
             </div>
             <div className="flex-1 rounded-xl border border-slate-900 bg-[#0b0f19]/50 bg-[radial-gradient(#1e293b_1px,transparent_1px)] bg-size-[16px_16px] p-6 shadow-2xl">
-              <canvas
-                className="w-full rounded-md border border-slate-900 bg-[#04060a] shadow-inner"
-                height="400"
-                id="graph"
-                width="400"
-              ></canvas>
+              <CubicGraph coefficients={coefficients} results={results}/>
             </div>
           </section>
         </div>

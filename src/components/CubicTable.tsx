@@ -1,7 +1,7 @@
 import type { Results } from "@ics4u-assignment-02/types";
+import { formatNumber } from "@ics4u-assignment-02/utils/calculation";
 import { Analysis } from "./Analysis";
 import { Summary } from "./Summary";
-import { formatNumber } from "@ics4u-assignment-02/utils/calculation";
 
 type CubicTableProps = {
   results: Results | null;
