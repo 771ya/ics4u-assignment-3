@@ -75,7 +75,7 @@ export const App = () => {
         </main>
 
         <div className="grid grid-cols-2 gap-12">
-          <CubicTable results={results}/>
+          <CubicTable results={results} />
 
           <section className="flex max-h-140 flex-col space-y-6">
             <div className="flex items-center gap-4">
@@ -93,7 +93,7 @@ export const App = () => {
               <h2 className="font-bold font-mono text-slate-500 text-xs uppercase tracking-widest">{"04 // GRAPH"}</h2>
             </div>
             <div className="flex-1 rounded-xl border border-slate-900 bg-[#0b0f19]/50 bg-[radial-gradient(#1e293b_1px,transparent_1px)] bg-size-[16px_16px] p-6 shadow-2xl">
-              <CubicGraph coefficients={coefficients} results={results}/>
+              <CubicGraph coefficients={coefficients} results={results} />
             </div>
           </section>
         </div>
